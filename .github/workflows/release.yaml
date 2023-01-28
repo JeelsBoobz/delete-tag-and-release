@@ -22,3 +22,10 @@ jobs:
           tag_name: ${{ github.event.inputs.tag }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        if: ${{ success() }}
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+          prerelease: false
+          generate_release_notes: true
