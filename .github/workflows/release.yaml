@@ -1,0 +1,24 @@
+name: Release Build
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release Tag'
+        required: true
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete tag ${{ github.event.inputs.tag }} if exists
+        uses: JeelsBoobz/delete-tag-and-release@latest
+        with:
+          delete_release: true
+          tag_name: ${{ github.event.inputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag Repo
+        uses: richardsimko/update-tag@v1.0.7
+        with:
+          tag_name: ${{ github.event.inputs.tag }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
